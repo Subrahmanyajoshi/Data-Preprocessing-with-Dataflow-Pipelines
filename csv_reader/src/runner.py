@@ -42,8 +42,8 @@ class DataFlowSubmitter(object):
             f'--project={self.project}',
             f'--job_name=csv_runner-{datetime.now().strftime("%Y%m%d-%H%M%S")}',
             '--save_main_session',
-            f'--staging_location=gs://{self.bucket}/staging/',
-            f'--temp_location=gs://{self.bucket}/temp/',
+            f'--staging_location=gs://{self.bucket}/csv_reader/staging/',
+            f'--temp_location=gs://{self.bucket}/csv_reader/temp/',
             '--region=us-central1',
             f'--runner={self.runner}'
         ]
@@ -58,7 +58,7 @@ class DataFlowSubmitter(object):
          | 'Groupby subject' >> beam.GroupBy('Subject')
          | 'Convert to dataframe' >> beam.Map(DataFlowSubmitter.convert_to_df)
          | 'Get dataset info' >> beam.Map(DataFlowSubmitter.get_info)
-         | 'Write info to Cloud Storage' >> beam.io.WriteToText(f"gs://{self.bucket}/output/csv_details-output.txt")
+         | 'Write info to Cloud Storage' >> beam.io.WriteToText(f"gs://{self.output_path}/csv_details-output.txt")
          )
         p.run()
 
@@ -69,8 +69,8 @@ def main():
     parser.add_argument('--bucket', type=str, required=True, help='Name of the bucket to host dataflow components')
     parser.add_argument('--bigquery-table', type=str, required=True, help='id of bigquery table')
     parser.add_argument('--output-path', type=str, required=True, help='output path to store results')
-    parser.add_argument('--direct-runner', type=str, required=False, action='store_true')
-    parser.add_argument('--dataflow-runner', type=str, required=False, action='store_true')
+    parser.add_argument('--direct-runner', required=False, action='store_true')
+    parser.add_argument('--dataflow-runner', required=False, action='store_true')
     args = parser.parse_args()
 
     runner = DataFlowSubmitter(args=args)

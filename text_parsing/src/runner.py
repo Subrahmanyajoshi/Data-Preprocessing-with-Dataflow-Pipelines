@@ -32,8 +32,8 @@ class DataFlowSubmitter(object):
             f'--project={self.project}',
             f'--job_name=test-processing-{datetime.now().strftime("%Y%m%d-%H%M%S")}',
             '--save_main_session',
-            f'--staging_location=gs://{self.bucket}/staging/',
-            f'--temp_location=gs://{self.bucket}/temp/',
+            f'--staging_location=gs://{self.bucket}/text_parsing/staging/',
+            f'--temp_location=gs://{self.bucket}/text_parsing/temp/',
             '--region=us-central1',
             f'--runner={self.runner}'
         ]
@@ -66,8 +66,8 @@ def main():
     parser.add_argument('--bucket', type=str, required=True, help='Name of the bucket to host dataflow components')
     parser.add_argument('--input-path', type=str, required=True, help='path to input data')
     parser.add_argument('--output-dir', type=str, required=True, help='output dir path to store results')
-    parser.add_argument('--direct-runner', type=str, required=False, action='store_true')
-    parser.add_argument('--dataflow-runner', type=str, required=False, action='store_true')
+    parser.add_argument('--direct-runner', required=False, action='store_true')
+    parser.add_argument('--dataflow-runner', required=False, action='store_true')
     args = parser.parse_args()
 
     runner = DataFlowSubmitter(args=args)
