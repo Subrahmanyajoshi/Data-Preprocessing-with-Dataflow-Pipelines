@@ -30,7 +30,7 @@ class DataFlowSubmitter(object):
 
         argv = [
             f'--project={self.project}',
-            f'--job_name=csv_runner-{datetime.now().strftime("%Y%m%d-%H%M%S")}',
+            f'--job_name=test-processing-{datetime.now().strftime("%Y%m%d-%H%M%S")}',
             '--save_main_session',
             f'--staging_location=gs://{self.bucket}/staging/',
             f'--temp_location=gs://{self.bucket}/temp/',
