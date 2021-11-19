@@ -12,7 +12,7 @@ class DataFlowSubmitter(object):
         self.project = args.project
         self.bucket = args.bucket
         self.bigquery_table = args.bigquery_table
-        self.output_path = args.output_path
+        self.output_dir = args.output_dir
 
         if args.direct_runner and args.dataflow_runner:
             raise ValueError('Please specify only one of the options. either direct runner or dataflow runner')
@@ -58,7 +58,7 @@ class DataFlowSubmitter(object):
          | 'Groupby subject' >> beam.GroupBy('Subject')
          | 'Convert to dataframe' >> beam.Map(DataFlowSubmitter.convert_to_df)
          | 'Get dataset info' >> beam.Map(DataFlowSubmitter.get_info)
-         | 'Write info to Cloud Storage' >> beam.io.WriteToText(f"gs://{self.output_path}/csv_details-output.txt")
+         | 'Write info to Cloud Storage' >> beam.io.WriteToText(f"gs://{self.output_dir}/csv_details-output.txt")
          )
         p.run()
 
@@ -68,7 +68,7 @@ def main():
     parser.add_argument('--project', type=str, required=True, help='Project id')
     parser.add_argument('--bucket', type=str, required=True, help='Name of the bucket to host dataflow components')
     parser.add_argument('--bigquery-table', type=str, required=True, help='id of bigquery table')
-    parser.add_argument('--output-path', type=str, required=True, help='output path to store results')
+    parser.add_argument('--output-dir', type=str, required=True, help='output path to store results')
     parser.add_argument('--direct-runner', required=False, action='store_true')
     parser.add_argument('--dataflow-runner', required=False, action='store_true')
     args = parser.parse_args()
