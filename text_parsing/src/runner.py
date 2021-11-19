@@ -4,10 +4,12 @@ from datetime import datetime
 
 import apache_beam as beam
 
+import nltk
 from nltk.corpus import stopwords
 
 
 class Preprocessor(object):
+    STOP_WORDS = set(stopwords.words('english'))
 
     @staticmethod
     def strip_lines(line: str):
@@ -40,8 +42,7 @@ class Preprocessor(object):
 
     @staticmethod
     def remove_stopwords(line: str):
-        stop_words = set(stopwords.words('english'))
-        return " ".join([word for word in line.split() if word not in stop_words])
+        return " ".join([word for word in line.split() if word not in Preprocessor.STOP_WORDS])
 
     @staticmethod
     def remove_special_chars(line: str):
@@ -147,6 +148,7 @@ def main():
     parser.add_argument('--dataflow-runner', required=False, action='store_true')
     args = parser.parse_args()
 
+    nltk.download('stopwords')
     runner = DataFlowSubmitter(args=args)
     runner.build_and_run()
 
