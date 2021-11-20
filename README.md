@@ -5,6 +5,16 @@ A repository to show how to use Google Cloud's Dataflow pipelines for data prepr
 - Jobs can be submitted to Dataflow either through notebook directly or using a python script.
 - The same apache beam pipelines can also be run locally by toggling a single parameter of pipeline. 
 
+### Important:
+- Notebooks I have mentioned above are Google Cloud vertex ai workbench notebooks run in Google Cloud with 
+apache beam environment.
+- All the python scripts are also run in vertex ai notebooks environment itself.
+
+### Install Dependencies
+```shell
+pip install requirements.txt
+```
+
 ## Csv Reader
 - Reads csv data stored in bigquery, groups it on the basis of a field and writes details of each dataframe created 
 into google cloud storage output directory path specified.
