@@ -1,3 +1,4 @@
+import string
 import argparse
 from argparse import Namespace
 from datetime import datetime
@@ -9,7 +10,7 @@ from nltk.corpus import stopwords
 
 
 class Preprocessor(object):
-    STOP_WORDS = set(stopwords.words('english'))
+    STOP_WORDS = None # This will be updated by main function at the beginning of execution.
 
     @staticmethod
     def strip_lines(line: str):
@@ -35,8 +36,6 @@ class Preprocessor(object):
 
     @staticmethod
     def remove_punctuations(line: str):
-        import string
-
         line = line.translate(str.maketrans('', '', string.punctuation))
         return line
 
@@ -149,6 +148,10 @@ def main():
     args = parser.parse_args()
 
     nltk.download('stopwords')
+    
+    # Initialize stop words
+    Preprocessor.STOP_WORDS = set(stopwords.words('english'))
+    
     runner = DataFlowSubmitter(args=args)
     runner.build_and_run()
 
