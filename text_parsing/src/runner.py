@@ -131,7 +131,8 @@ class DataFlowSubmitter(object):
          | 'To csv' >> beam.Map(DataFlowSubmitter.to_csv)
          | 'Write as csv' >> beam.io.WriteToText(f'{self.output_dir}/train',
                                                  file_name_suffix='.csv',
-                                                 header='text, label')
+                                                 header='text, label',
+                                                 num_shards=1)
          )
 
         p.run()

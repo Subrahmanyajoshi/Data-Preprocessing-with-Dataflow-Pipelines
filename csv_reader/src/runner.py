@@ -58,7 +58,8 @@ class DataFlowSubmitter(object):
          | 'Groupby subject' >> beam.GroupBy('Subject')
          | 'Convert to dataframe' >> beam.Map(DataFlowSubmitter.convert_to_df)
          | 'Get dataset info' >> beam.Map(DataFlowSubmitter.get_info)
-         | 'Write info to Cloud Storage' >> beam.io.WriteToText(f"gs://{self.output_dir}/csv_details-output.txt")
+         | 'Write info to Cloud Storage' >> beam.io.WriteToText(f"gs://{self.output_dir}/csv_details-output.txt",
+                                                                num_shards=1)
          )
         p.run()
 
