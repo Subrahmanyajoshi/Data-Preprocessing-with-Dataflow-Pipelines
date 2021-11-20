@@ -10,7 +10,7 @@ from nltk.corpus import stopwords
 
 
 class Preprocessor(object):
-    STOP_WORDS = None # This will be updated by main function at the beginning of execution.
+    STOP_WORDS = None  # This will be updated by main function at the beginning of execution.
 
     @staticmethod
     def strip_lines(line: str):
@@ -131,7 +131,7 @@ class DataFlowSubmitter(object):
          | 'To csv' >> beam.Map(DataFlowSubmitter.to_csv)
          | 'Write as csv' >> beam.io.WriteToText(f'{self.output_dir}/train',
                                                  file_name_suffix='.csv',
-                                                 header='text, label',
+                                                 header='text,label',
                                                  num_shards=1)
          )
 
@@ -149,10 +149,10 @@ def main():
     args = parser.parse_args()
 
     nltk.download('stopwords')
-    
+
     # Initialize stop words
     Preprocessor.STOP_WORDS = set(stopwords.words('english'))
-    
+
     runner = DataFlowSubmitter(args=args)
     runner.build_and_run()
 

@@ -6,9 +6,11 @@ A repository to show how to use Google Cloud's Dataflow pipelines for data prepr
 - The same apache beam pipelines can also be run locally by toggling a single parameter of pipeline. 
 
 ### Important:
-- Notebooks I have mentioned above are Google Cloud vertex ai workbench notebooks run in Google Cloud with 
+- Notebooks I have mentioned above are Google Cloud Vertex AI workbench notebooks run in Google Cloud with 
 apache beam environment.
-- All the python scripts are also run in vertex ai notebooks environment itself.
+- All the python scripts are also run in Vertex AI notebooks environment itself.
+- While mentioning paths of files/directories in google cloud buckets, make sure to mention full path starting
+from gs:// .
 
 ### Install Dependencies
 ```shell
