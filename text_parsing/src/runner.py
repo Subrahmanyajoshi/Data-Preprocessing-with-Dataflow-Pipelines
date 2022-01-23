@@ -14,43 +14,50 @@ class Preprocessor(object):
 
     @staticmethod
     def strip_lines(line: str):
+        """ Removing extra spaces at the end, beginning, or in the middle of a sentence """
         line = line.strip()
         line = ' '.join(line.split())
         return line
 
     @staticmethod
-    def contract_lines(line: str):
-        contraction_dict = {"ain't": "are not", "'s": " is", "aren't": "are not", "don't": "do not",
-                            "didn't": "did not", "won't": "will not",
-                            "can't": "cannot"}
+    def expand_words(line: str):
+        """ Expanding words """
+        expansion_dict = {"ain't": "are not", "'s": " is", "aren't": "are not", "don't": "do not",
+                          "didn't": "did not", "won't": "will not",
+                          "can't": "cannot"}
 
         words = line.split()
         for i in range(len(words)):
-            if words[i] in contraction_dict:
-                words[i] = contraction_dict[words[i]]
+            if words[i] in expansion_dict:
+                words[i] = expansion_dict[words[i]]
         return ' '.join(words)
 
     @staticmethod
     def to_lower_case(line: str):
+        """ Converting all letters in the sentence to lower case """
         return line.lower()
 
     @staticmethod
     def remove_punctuations(line: str):
+        """ Removing punctuations """
         line = line.translate(str.maketrans('', '', string.punctuation))
         return line
 
     @staticmethod
     def remove_stopwords(line: str):
+        """ Removing stopwords """
         return " ".join([word for word in line.split() if word not in Preprocessor.STOP_WORDS])
 
     @staticmethod
     def remove_special_chars(line: str):
+        """ Removing special characters """
         import re
         line = re.sub('[-+.^:,]', '', line)
         return line
 
     @staticmethod
     def remove_emojis(line: str):
+        """ Removing emojis """
         import re
 
         emoj = re.compile("["
@@ -77,6 +84,7 @@ class Preprocessor(object):
 
     @staticmethod
     def split_data(line: str):
+        """ Convert labels to numeric form """
         line = line.split(maxsplit=1)
         if len(line) == 2:
             value = line[1]
@@ -120,7 +128,7 @@ class DataFlowSubmitter(object):
         (p
          | 'Read text file' >> beam.io.ReadFromText(self.input_path)
          | 'Strip lines' >> beam.Map(Preprocessor.strip_lines)
-         | 'Contract lines' >> beam.Map(Preprocessor.contract_lines)
+         | 'Contract lines' >> beam.Map(Preprocessor.expand_words)
          | 'Lower case' >> beam.Map(Preprocessor.to_lower_case)
          | 'Remove punctuations' >> beam.Map(Preprocessor.remove_punctuations)
          | 'Remove stopwords' >> beam.Map(Preprocessor.remove_stopwords)
